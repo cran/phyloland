@@ -30,6 +30,7 @@
 \alias{verif_arg}
 \alias{reorder_treel}
 \alias{reorder_treep}
+\alias{break_node_height_tie}
 \title{Internal phyloland Functions}
 \description{
  Internal phyloland functions
