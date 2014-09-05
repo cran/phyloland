@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "R.h"
-#include "Rmath.h"
+#include <Rmath.h>
+
 
 int IsFiniteNumber(double x) ;
 long sample_proba( int x[], double proba[], long length);
@@ -405,7 +406,11 @@ int IsFiniteNumber(double x)
 long sample_proba( int x[], double proba[], long length)
 {
 	int i = 0, res = 0;
-	double a = (random()/(double)RAND_MAX), sum_proba = 0;
+  double a, sum_proba = 0;
+	//double a = (random()/(double)RAND_MAX);
+  GetRNGstate();
+  a = unif_rand();
+  PutRNGstate();
 	for ( i = 0 ; i < length ; i++) {
 		sum_proba += proba[i];
 		if (a < sum_proba) {
@@ -419,7 +424,10 @@ long sample_proba( int x[], double proba[], long length)
 double rexp_proba(double lambda_exp)
 {
 	double res = 0 ;
-	res = -log((random()/(double)RAND_MAX))/(lambda_exp);
+	//res = -log((random()/(double)RAND_MAX))/(lambda_exp);
+  GetRNGstate();
+  res = -log(unif_rand())/(lambda_exp);
+  PutRNGstate();
 	return res;
 }
 
