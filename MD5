@@ -1,6 +1,6 @@
-c686d09b83b0b709d0a3a83c4f16586e *DESCRIPTION
+a97a49cdc80ae360c3521f1793a3b54e *DESCRIPTION
 858df2f7026775ded9c3b4ad711a6412 *NAMESPACE
-8eaaef10ad4ec5280edca563e6f20999 *R/pack_Phylogeo_Functions_g.R
+f278dfaf0d8cdc81e6399bc4fb63b4a6 *R/pack_Phylogeo_Functions_g.R
 4f2cdf3e88347e85c4024c8dfca156ac *R/zzz.R
 1ef264cafaac6374ae1ec3d03f1987a6 *data/Banza.RData
 86a0a42250ad3236f0da6d2ea741a753 *inst/extdata/locations_Banza.txt
@@ -14,4 +14,4 @@ bf5e0a8a6884e6460b634f7c8664eec7 *man/PLD_stat_mig.Rd
 612f7d2e0c59c660a9a4c02fc90b51a1 *man/phyloland-internal.Rd
 a5a6b182c7d9ae14fcf1035e9ceefe61 *man/phyloland-package.Rd
 d8503e7dce845535f2abef30d0958da9 *man/tree_Banza.nex.Rd
-f75afce81999dadd260c0800b5d3aa4b *src/main.c
+c04464024eea514cb6151460fe608081 *src/main.c

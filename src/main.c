@@ -405,7 +405,7 @@ int IsFiniteNumber(double x)
 long sample_proba( int x[], double proba[], long length)
 {
 	int i = 0, res = 0;
-	double a = (rand()/(double)RAND_MAX), sum_proba = 0;
+	double a = (random()/(double)RAND_MAX), sum_proba = 0;
 	for ( i = 0 ; i < length ; i++) {
 		sum_proba += proba[i];
 		if (a < sum_proba) {
@@ -419,7 +419,7 @@ long sample_proba( int x[], double proba[], long length)
 double rexp_proba(double lambda_exp)
 {
 	double res = 0 ;
-	res = -log((rand()/(double)RAND_MAX))/(lambda_exp);
+	res = -log((random()/(double)RAND_MAX))/(lambda_exp);
 	return res;
 }
 

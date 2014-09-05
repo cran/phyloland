@@ -53,12 +53,12 @@ PLD_interface <- function(fileTREES, fileDATA, num_step=100000, freq=100, burnin
   space = space_loc[[3]]
   
   if (sum(is.na(names_locations)) != 0){
-    names_locations = as.character(c(1:dim(space)[2]))
+    #names_locations = as.character(c(1:dim(space)[2]))
+    names_locations = as.character(tips)
   }else{
     names_locations = as.character(names_locations)
   }
   verif_arg(names_locations, len = length(tips), name_function = "PLD_interface")
-  
   colnames_space = rep("",dim(space)[2])
   for (n in 1:dim(space)[2]){
     colnames_space[n] = names_locations[which(loc_tips==n)[1]]
@@ -87,7 +87,7 @@ PLD_interface <- function(fileTREES, fileDATA, num_step=100000, freq=100, burnin
   }
   
   # no output filename given, should not be allowed...
-  if (is.na(filena_loc)){
+  if (!is.na(filena_loc)){
     nodes = c(1:length(gtreel$nodes[,1]))
     nodes[1:length(tips)] = tips
     write.table(t(c("num_step",nodes)),row.names=FALSE,col.names=FALSE,file=filena_loc,sep="\t",eol="\n",append=FALSE)
@@ -100,7 +100,8 @@ PLD_interface <- function(fileTREES, fileDATA, num_step=100000, freq=100, burnin
   stat_loc = vector("numeric",7)
   
   trees = mcmco[[3]]
-  sampled_loc = read_loc(filena_loc)
+  #sampled_loc = read_loc(filena_loc)
+  sampled_loc = mcmco[[2]][,2:ncol(mcmco[[2]])]
   ind = mcmco[[6]]
   rownames(space) = c("Dimension1", "Dimension2")
   x <- (list( trees = trees, locations = sampled_loc, tips = tips, space = space, index = ind, mcmc = mcmco, sigma_limit = round(unlist(mcmco[[8]]),3)))
@@ -617,6 +618,7 @@ sim_history <- function(gtreel, space, sigma, lambda, tau, locations = 0, getL =
 				}else{
 					migration_event = new_migration( space, occupied, sigma, lambda, tau, 0, 0, c(ploc,locdest,abs(inode_height[node_id[n]]-inode_height[node_id[n-1]])) )
 				}
+#if (migration_event[3]>1) print(migration_event)
 				history_proba_val = history_proba_val + log(migration_event[3])
 				occupied[locdest] = occupied[locdest] + 1
 			}else{## sample a migration from the father's location if children nodes have more than 1 possible location, according to model (samunif!=1) or uniformly in the list of possible node location (samunif==1)
@@ -897,19 +899,32 @@ mcmc_phyloland<-function(space, gtreel, simul_values, treelikelihood, est_sigma=
         ##gtreelikelihood_new = treelikelihood[[ind]]
         locations = internal_loc(gtreel_new,locations_sim[,1]) ## get list of possible locations for all nodes, Uniform
         locations_sampled_new = sim_history(gtreel_new,space,sigma,lambda,tau,locations,0,model,1)[[1]]
+#ordered = reorder_treel(gtreel_new,locations_sampled_new[,1])
+#locations_sampled_new = cbind( ordered[[2]], matrix(0,nrow=length(gtreel$nodes[,1]),ncol=((dim(space)[1]))) )
+#gtreel_new = ordered[[1]]
         check_treel(gtreel_new,locations_sampled_new)
         likeli_new = sim_history(gtreel_new,space,sigma,lambda,tau,locations_sampled_new[,1],1,model)[[2]]
         ##metropolis = likeli_new + gtreelikelihood_new - likeli_curr - gtreelikelihood_curr
-        #metropolis = likeli_new - likeli_curr
+        metropolis = likeli_new - likeli_curr
         #accepted = 0
-        #if (runif(1,min=0,max=1)<exp(metropolis)){
+        if (runif(1,min=0,max=1)<exp(metropolis)){
           tree_phylo = tree_phylo_new
           gtreel = gtreel_new
           locations_sampled = locations_sampled_new
           likeli_curr = likeli_new
           ##gtreelikelihood_curr = gtreelikelihood_new
           #accepted = 1
-        #}
+#if (likeli_new>0){
+#print(paste(ind,likeli_new))
+#ordered = reorder_treel(gtreel,locations_sampled[,1])
+#locations_ordered = ordered[[2]]
+#tree_phylo_ordered = reorder_treep(tree_phylo)
+#print(locations_ordered)
+#print(paste(sigma[1],sigma[2],lambda,tau))
+#plot_trees_tips(tree_phylo_ordered,locations_ordered,space)
+#readline()
+#}
+        }
         if (plot_phylo==1){
           gtreeape = lconverttree(gtreel)
           plot.phylo(gtreeape,show.node.label=TRUE)
